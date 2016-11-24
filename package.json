@@ -1,5 +1,5 @@
 {
-  "name": "semantic-ui-react-loader",
+  "name": "semantic-ui-react-less-loader",
   "version": "0.1.1",
   "description": "Webpack loader for semantic-ui-react: add styles from semantic-ui-less to semantic-ui-react components",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gadyonysh/semantic-ui-react-loader.git"
+    "url": "git+https://github.com/gadyonysh/semantic-ui-react-less-loader.git"
   },
   "keywords": [
     "webpack",
@@ -19,7 +19,7 @@
   "author": "gadyonysh",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gadyonysh/semantic-ui-react-loader/issues"
+    "url": "https://github.com/gadyonysh/semantic-ui-react-less-loader/issues"
   },
-  "homepage": "https://github.com/gadyonysh/semantic-ui-react-loader#readme"
+  "homepage": "https://github.com/gadyonysh/semantic-ui-react-less-loader#readme"
 }

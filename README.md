@@ -1,1 +1,1 @@
-# semantic-ui-react-loader
+# semantic-ui-react-less-loader
