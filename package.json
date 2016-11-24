@@ -1,6 +1,6 @@
 {
   "name": "semantic-ui-react-less-loader",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Webpack loader for semantic-ui-react: add styles from semantic-ui-less to semantic-ui-react components",
   "main": "index.js",
   "scripts": {
