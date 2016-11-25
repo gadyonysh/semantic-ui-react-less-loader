@@ -1,32 +1,48 @@
 var fs = require('fs');
-var componentPathRegex = /([^\W]+)[\\\/]semantic-ui-react[\\\/]src[\\\/](elements|collections|modules|views)[\\\/]([a-zA-Z0-9-]+)[\\\/]index.jsx?$/;
+var path = require('path');
 
-function getStylePath(definition, component)
+var semanticUiReactRoot = path.dirname(
+  require.resolve('semantic-ui-react/package.json')
+);
+
+var semanticUiLessRoot = path.dirname(
+  require.resolve('semantic-ui-less/package.json')
+);
+var semanticUiReactComponentPathRegex = /[\\\/]semantic-ui-react[\\\/]src[\\\/](elements|collections|modules|views)[\\\/]([a-zA-Z0-9_-]+)[\\\/]index.jsx?$/;
+
+function getSemanticUiLessComponentPath(definition, component)
 {
-  return 'semantic-ui-less/definitions/' + definition + '/' + component.toLowerCase() + '.less';
+  return 'definitions/' + definition + '/' + component.toLowerCase() + '.less';
 }
 
-function getStyleImport(path)
+function getSemanticUiLessComponentImport(semanticUiLessComponentPath)
 {
-  return 'import \'' + path + '\';';
+  return 'import \'semantic-ui-less/' + semanticUiLessComponentPath + '\';';
 }
 
 module.exports = function(source, map)
 {
-  this.cacheable();
-
-  var matches = this.resourcePath.match(componentPathRegex);
-  var fsPath;
-  var path;
-
-  if (matches && matches.length === 4)
+  if (this.cacheable)
   {
-    fsPath = matches[1].replace('\\', '/');
-    path = getStylePath(matches[2], matches[3]);
+    this.cacheable();
+  }
 
-    if (fs.existsSync(fsPath + '/' + path))
+  var componentPathDetails = this.resourcePath.indexOf(semanticUiReactRoot) === 0 && this.resourcePath.match(semanticUiReactComponentPathRegex);
+  var definition;
+  var component;
+  var semanticUiLessComponentFullPath;
+  var semanticUiLessComponentPath;
+
+  if (componentPathDetails && componentPathDetails.length === 3)
+  {
+    definition = componentPathDetails[1];
+    component = componentPathDetails[2];
+    semanticUiLessComponentPath = getSemanticUiLessComponentPath(definition, component);
+    semanticUiLessComponentFullPath = path.resolve(semanticUiLessRoot, semanticUiLessComponentPath);
+
+    if (fs.existsSync(semanticUiLessComponentFullPath))
     {
-      source = getStyleImport(path) + source;
+      source = getSemanticUiLessComponentImport(semanticUiLessComponentPath) + source;
     }
   }
 
