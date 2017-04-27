@@ -1,14 +1,10 @@
 var fs = require('fs');
 var path = require('path');
 
-var semanticUiReactRoot = path.dirname(
-  require.resolve('semantic-ui-react/package.json')
-);
-
 var semanticUiLessRoot = path.dirname(
   require.resolve('semantic-ui-less/package.json')
 );
-var semanticUiReactComponentPathRegex = /[\\\/]semantic-ui-react[\\\/]src[\\\/](elements|collections|modules|views)[\\\/]([a-zA-Z0-9_-]+)[\\\/]index.jsx?$/;
+var semanticUiReactComponentPathRegex = /[\\\/]node_modules[\\\/]semantic-ui-react[\\\/]src[\\\/](elements|collections|modules|views)[\\\/]([a-zA-Z0-9_-]+)[\\\/]index.jsx?$/;
 
 function getSemanticUiLessComponentPath(definition, component)
 {
@@ -27,7 +23,8 @@ module.exports = function(source, map)
     this.cacheable();
   }
 
-  var componentPathDetails = this.resourcePath.indexOf(semanticUiReactRoot) === 0 && this.resourcePath.match(semanticUiReactComponentPathRegex);
+  var componentPathDetails = this.resourcePath.match(semanticUiReactComponentPathRegex);
+
   var definition;
   var component;
   var semanticUiLessComponentFullPath;
