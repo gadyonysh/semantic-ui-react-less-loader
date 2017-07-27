@@ -19,11 +19,16 @@ Add loader for semantic-ui-react components in your webpack config:
 ```js
 module: {
   loaders: [
-    {
-      test: /\.jsx?$/,
-      loader: 'babel!semantic-ui-react-less-loader',
-      include: [/node_modules[\/\\]semantic-ui-react/]
-    }
+     {
+       test: /\.jsx?$/,
+       loader: 'babel-loader',
+       include: [/node_modules[\/\\]semantic-ui-react/]
+     },
+     {
+       test: /\.less$/,
+       loader: 'semantic-ui-react-less-loader',
+       include: [/node_modules[\/\\]semantic-ui-react/]
+     }
 ],
 ```
 
