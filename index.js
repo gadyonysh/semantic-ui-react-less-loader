@@ -4,7 +4,8 @@ var path = require('path');
 var semanticUiLessRoot = path.dirname(
   require.resolve('semantic-ui-less/package.json')
 );
-var semanticUiReactComponentPathRegex = /[\\\/]node_modules[\\\/]semantic-ui-react[\\\/]src[\\\/](elements|collections|modules|views)[\\\/]([a-zA-Z0-9_-]+)[\\\/]index.jsx?$/;
+var semanticUiReactComponentPathRegex = /[\\\/]node_modules[\\\/]semantic-ui-react[\\\/](src|dist[\\\/](?:es|commonjs))[\\\/](elements|collections|modules|views)[\\\/]([a-zA-Z0-9_-]+)[\\\/](?:[a-zA-Z0-9_-]+).jsx?$/;
+var semanticUiReactDistPathEs6Regex = /src|dist[\\\/]es/;
 
 function getSemanticUiLessComponentPath(definition, component)
 {
@@ -14,6 +15,11 @@ function getSemanticUiLessComponentPath(definition, component)
 function getSemanticUiLessComponentImport(semanticUiLessComponentPath)
 {
   return 'import \'semantic-ui-less/' + semanticUiLessComponentPath + '\';';
+}
+
+function getSemanticUiLessComponentRequire(semanticUiLessComponentPath)
+{
+  return 'require (\'semantic-ui-less/' + semanticUiLessComponentPath + '\');';
 }
 
 module.exports = function(source, map)
@@ -30,16 +36,21 @@ module.exports = function(source, map)
   var semanticUiLessComponentFullPath;
   var semanticUiLessComponentPath;
 
-  if (componentPathDetails && componentPathDetails.length === 3)
+  if (componentPathDetails && componentPathDetails.length === 4)
   {
-    definition = componentPathDetails[1];
-    component = componentPathDetails[2];
+    dist = componentPathDetails[1];
+    definition = componentPathDetails[2];
+    component = componentPathDetails[3];
     semanticUiLessComponentPath = getSemanticUiLessComponentPath(definition, component);
     semanticUiLessComponentFullPath = path.resolve(semanticUiLessRoot, semanticUiLessComponentPath);
 
     if (fs.existsSync(semanticUiLessComponentFullPath))
     {
-      source = getSemanticUiLessComponentImport(semanticUiLessComponentPath) + source;
+      if (dist.match(semanticUiReactDistPathEs6Regex)) {
+        source = getSemanticUiLessComponentImport(semanticUiLessComponentPath) + source;
+      } else {
+        source = getSemanticUiLessComponentRequire(semanticUiLessComponentPath) + source;
+      }
     }
   }
 
