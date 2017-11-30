@@ -32,7 +32,7 @@ module: {
 ```js
 import React from 'react';
 import { render as renderDom } from 'react-dom';
-import Button from 'semantic-ui-react/src/elements/Button';
+import Button from 'semantic-ui-react';
 
 const container = document.createElement('div');
 
